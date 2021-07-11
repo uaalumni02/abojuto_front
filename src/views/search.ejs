@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Abojuto</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/css/search.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Abojuto</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <br><br>
+    <select id="stateId" class="form-control" style="height: 35px" onchange="supervisorByState()">
+    </select>
+</body>
+<script>
+    window.addEventListener("load", (req, res) => {
+        fetch('http://localhost:3000/api/state/', {
+            method: "GET",
+        })
+            .then(res => res.json())
+            .then(response => {
+                let html = '';
+                for (var i = 0; i < response.data.length; i++) {
+                    html += `<option value="${response.data[i].state_id}"> ${response.data[i].name}  </option>`;
+                    html +=  `<select id="stateId onchange="supervisiorByState()">`
+                    const stateContainer = document.getElementById("stateId");
+                    stateContainer.innerHTML = html;
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    })
+
+    const supervisorByState = () => {
+        let state = document.getElementById("stateId").value;
+        fetch('http://localhost:3000/api/supervisor/search?state=' + state, {
+            method: "GET",
+        })
+            .then(res => res.json())
+            .then(response => {
+                console.log(response)
+            })
+            .catch(error => console.error('Error:', error));
+    }
+</script>
+
+</html>
