@@ -30,8 +30,15 @@
     <br><br>
     <select id="stateId" class="form-control" style="height: 35px" onchange="supervisorByState()">
     </select>
+    <br><br>
+    <select id="specialtyId" class="form-control" style="height: 35px" onchange="supervisorBySpecialty()">
+    </select>
+    <br><br>
+    <select id="modalityId" class="form-control" style="height: 35px" onchange="supervisorByModality()">
+    </select>
 </body>
 <script>
+    //get states
     window.addEventListener("load", (req, res) => {
         fetch('http://localhost:3000/api/state/', {
             method: "GET",
@@ -41,7 +48,7 @@
                 let html = '';
                 for (var i = 0; i < response.data.length; i++) {
                     html += `<option value="${response.data[i].state_id}"> ${response.data[i].name}  </option>`;
-                    html +=  `<select id="stateId onchange="supervisiorByState()">`
+                    html += `<select id="stateId onchange="supervisiorByState()">`
                     const stateContainer = document.getElementById("stateId");
                     stateContainer.innerHTML = html;
                 }
@@ -56,7 +63,62 @@
         })
             .then(res => res.json())
             .then(response => {
+                window.history.pushState("object or string", "Title", '/search?state=' + state);
+            })
+            .catch(error => console.error('Error:', error));
+    }
+    //get speciality
+    window.addEventListener("load", (req, res) => {
+        fetch('http://localhost:3000/api/specialty', {
+            method: "GET",
+        })
+            .then(res => res.json())
+            .then(response => {
+                let html = '';
+                for (var i = 0; i < response.data.length; i++) {
+                    html += `<option value="${response.data[i].id}"> ${response.data[i].specialty}  </option>`;
+                    const specialtyContainer = document.getElementById("specialtyId");
+                    specialtyContainer.innerHTML = html;
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    })
+    const supervisorBySpecialty = () => {
+        let specialty = document.getElementById("specialtyId").value;
+        fetch('http://localhost:3000/api/supervisor/search?specialty=' + specialty, {
+            method: "GET",
+        })
+            .then(res => res.json())
+            .then(response => {
+                window.history.pushState("object or string", "Title", '/search?specialty=' + specialty);
+            })
+            .catch(error => console.error('Error:', error));
+    }
+     //get modality
+     window.addEventListener("load", (req, res) => {
+        fetch('http://localhost:3000/api/modality', {
+            method: "GET",
+        })
+            .then(res => res.json())
+            .then(response => {
+                let html = '';
+                for (var i = 0; i < response.data.length; i++) {
+                    html += `<option value="${response.data[i].id}"> ${response.data[i].modality}  </option>`;
+                    const modalityContainer = document.getElementById("modalityId");
+                    modalityContainer.innerHTML = html;
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    })
+    const supervisorByModality = () => {
+        let modality = document.getElementById("modalityId").value;
+        fetch('http://localhost:3000/api/supervisor/search?modality=' + modality, {
+            method: "GET",
+        })
+            .then(res => res.json())
+            .then(response => {
                 console.log(response)
+                window.history.pushState("object or string", "Title", '/search?modality=' + modality);
             })
             .catch(error => console.error('Error:', error));
     }
