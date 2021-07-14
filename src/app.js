@@ -33,5 +33,8 @@ app.get("/search?specialty=", (req, res) => {
 app.get("/search?modality=", (req, res) => {
   return res.render("search");
 });
+app.get("/search?license=", (req, res) => {
+    return res.render("search");
+  });
 
 app.listen(port, () => console.log("server is running"));
