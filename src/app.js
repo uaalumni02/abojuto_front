@@ -37,6 +37,8 @@ app.get("/search?license=", (req, res) => {
     return res.render("search");
   });
 
-
+  app.get("/profile/:id", (req, res) => {
+    return res.render("profile");
+  });
 
 app.listen(port, () => console.log("server is running"));
