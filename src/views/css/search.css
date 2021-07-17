@@ -1,13 +1,22 @@
-#stateId{
+#stateId {
   width: 240px;
 }
 
-#specialtyId{
+#specialtyId {
   width: 240px;
 }
-#modalityId{
+#modalityId {
   width: 240px;
 }
-#categoryId{
+#categoryId {
   width: 240px;
+}
+
+div.sup-option {
+  margin-right: 15px;
+  left: 50%;
+  top: -285px;
+}
+#supervisorList {
+  height: 100%;
 }

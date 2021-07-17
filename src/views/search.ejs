@@ -28,17 +28,22 @@
         </div>
     </nav>
     <br><br>
-    <select id="stateId" class="form-control" style="height: 35px" onchange="supervisorSearch()">
-    </select>
-    <br></br>
-    <select id="categoryId" class="form-control" style="height: 35px" onchange="supervisorSearch()">
-    </select>
-    <br><br>
-    <select id="specialtyId" class="form-control" style="height: 35px" onchange="supervisorSearch()">
-    </select>
-    <br><br>
-    <select id="modalityId" class="form-control" style="height: 35px" onchange="supervisorSearch()">
-    </select>
+    <div class="container">
+        <select id="stateId" class="form-control" style="height: 35px" onchange="supervisorSearch()">
+        </select>
+        <br></br>
+        <select id="categoryId" class="form-control" style="height: 35px" onchange="supervisorSearch()">
+        </select>
+        <br><br>
+        <select id="specialtyId" class="form-control" style="height: 35px" onchange="supervisorSearch()">
+        </select>
+        <br><br>
+        <select id="modalityId" class="form-control" style="height: 35px" onchange="supervisorSearch()">
+        </select>
+    </div>
+
+    <div id="supervisorList"> </div>
+
 </body>
 <script>
     //get states
@@ -120,12 +125,23 @@
         let licenseCategory = document.getElementById("categoryId").value;
         let specialty = document.getElementById("specialtyId").value;
         let modality = document.getElementById("modalityId").value;
-        fetch('http://localhost:3000/api/supervisor/search?state=' + state + '&license=' + licenseCategory + '&modality=' + modality + '&speacialty=' + specialty, {
+        fetch('http://localhost:3000/api/supervisor/search?state=' + state + '&license=' + licenseCategory + '&modality=' + modality + '&specialty=' + specialty, {
             method: "GET",
         })
             .then(res => res.json())
             .then(response => {
-                console.log(response)
+                // console.log(response.data)
+                var supervisorHtml = '';
+                for (var i = 0; i < response.data.length; i++) {
+                    console.log(response.data[i].name)
+                    supervisorHtml += ` <div class="card sup-option"  style="width: 18rem;">`
+                    supervisorHtml += `<div class="card-body">`
+                    supervisorHtml += `<h6 id="supProfile" class="item-name card-title">${response.data[i].name} </h4>`;
+                    supervisorHtml += `</div>`;
+                    supervisorHtml += `</div>`;
+                }
+                const supervisorContainer = document.getElementById("supervisorList");
+                supervisorContainer.innerHTML = supervisorHtml;
                 if (state) {
                     window.history.pushState("object or string", "Title", '/search?state=' + state);
                 }
@@ -141,6 +157,7 @@
                 if (state && licenseCategory && modality && specialty) {
                     window.history.pushState("object or string", "Title", '/search?state=' + state + '&license=' + licenseCategory + '&modality=' + modality + '&speacialty=' + specialty,);
                 }
+
             })
             .catch(error => console.error('Error:', error));
     }
