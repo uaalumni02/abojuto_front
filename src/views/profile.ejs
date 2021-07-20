@@ -9,6 +9,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="/css/profile.css">
 </head>
 
 <body>
@@ -26,5 +27,34 @@
             </ul>
         </div>
     </nav>
+    <div id="profile"> </div>
 </body>
+<script>
+
+    let url = window.location.pathname;
+    let profile = url.substring(url.lastIndexOf('/') + 1)
+    fetch('http://localhost:3000/api/supervisor/search/' + profile, {
+        method: "GET",
+    })
+        .then(res => res.json())
+        .then(response => {
+            console.log(response.data)
+            var profileHtml = '';
+            for (var i = 0; i < response.data.length; i++) {
+                profileHtml += ` <div class="card sup-option"  style="width: 18rem;">`
+                profileHtml += `<div class="card-body">`
+                profileHtml += `<h6 id="supProfile" class="item-name card-title">${response.data[i].name} </h4>`;
+                profileHtml += `<h6 id="supProfile" class="item-name card-title">${response.data[i].license} </h4>`;
+                profileHtml += `<h6 id="supProfile" class="item-name card-title">${response.data[i].about} </h4>`;
+                profileHtml += `<h6 id="supProfile" class="item-name card-title">${response.data[i].universities} </h4>`;
+                profileHtml += `</div>`;
+                profileHtml += `</div>`;
+            }
+            const profileContainer = document.getElementById("profile");
+            profileContainer.innerHTML = profileHtml;
+        })
+        .catch(error => console.error('Error:', error));
+
+</script>
+
 </html>
