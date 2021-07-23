@@ -133,10 +133,12 @@
                 // console.log(response.data)
                 var supervisorHtml = '';
                 for (var i = 0; i < response.data.length; i++) {
-                    supervisorHtml += ` <div class="card sup-option"  style="width: 18rem;">`
+                    supervisorHtml += ` <div class="card sup-option"  style="width: 21rem;">`
                     supervisorHtml += `<div class="card-body">`
                     supervisorHtml += `<h6 id="supProfile" class="item-name card-title">${response.data[i].name} </h4>`;
                     supervisorHtml += `<a  type="submit" href="/profile/${response.data[i].user_id}" target="_blank">View Profile</a>`
+                    supervisorHtml += `&nbsp &nbsp &nbsp`
+                    supervisorHtml += `<a  type="submit" href="/register/${response.data[i].user_id}">Schedule Introduction</a>`
                     supervisorHtml += `</div>`;
                     supervisorHtml += `</div>`;
                 }

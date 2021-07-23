@@ -1,0 +1,21 @@
+#firstName {
+  width: 500px;
+}
+#lastName {
+  width: 500px;
+}
+#email {
+  width: 500px;
+}
+#phone {
+  width: 500px;
+}
+#password {
+  width: 500px;
+}
+.form {
+  margin: auto;
+  width: 50%;
+  padding: 10px;
+  top: 100px;
+}
