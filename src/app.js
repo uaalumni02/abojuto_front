@@ -44,6 +44,10 @@ app.get("/search?license=", (req, res) => {
   app.get("/register/:id", (req, res) => {
     return res.render("register");
   });
+
+  app.get("/login", (req, res) => {
+    return res.render("login");
+  });
   
 
 app.listen(port, () => console.log("server is running"));
