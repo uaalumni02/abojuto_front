@@ -48,6 +48,10 @@ app.get("/search?license=", (req, res) => {
   app.get("/login", (req, res) => {
     return res.render("login");
   });
+  app.get("/schedule/:id", (req, res) => {
+    return res.render("schedule");
+  });
+  
   
 
 app.listen(port, () => console.log("server is running"));
