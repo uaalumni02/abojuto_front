@@ -107,8 +107,7 @@
                 }
                 const timeContainer = document.getElementById("time");
                 timeContainer.innerHTML = timeHtml;
-
-                console.log('dom updated')
+                
                 $('.item-time').click(function (e) {
                     const selectedTimeId = $(this).data('time_id');
                     submitForm(selectedTimeId);

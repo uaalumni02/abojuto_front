@@ -100,3 +100,8 @@ a {
 #btn {
   margin-left: 160px;
 }
+
+#pswdNotification {
+  display: none;
+  color: red;
+}

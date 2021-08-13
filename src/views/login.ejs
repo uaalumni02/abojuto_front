@@ -34,6 +34,9 @@
                 <input class="pass" id="password" type="password" align="center" placeholder="Password">
                 <button id="btn" type="submit" class="btn btn-primary">Sign in</button>
             </form>
+            <div id="pswdNotification">
+                <p style="text-align: center">Incorrect Email or Password</p>
+            </div>
     </div>
 </body>
 <script>
@@ -56,6 +59,9 @@
                 .then(res => res.json())
                 .then(response => {
                     console.log(response)
+                    if (!response.success) {
+                        document.getElementById("pswdNotification").style.display = "block";
+                    }
                 }).catch(error => console.error('Error:', error));
             $('#loginForm').get(0).reset();
         })
