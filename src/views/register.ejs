@@ -85,6 +85,7 @@
                 .then(response => {
                     if (response) {
                         localStorage.setItem('customer', response.data.customer_id);
+                        localStorage.setItem('token', response.data.token);
                         window.location.href = "http://localhost:8080/schedule/" + supervisor_id;
                     }
                 }).catch(error => console.error('Error:', error));

@@ -33,7 +33,7 @@
 
     let url = window.location.pathname;
     let profile = url.substring(url.lastIndexOf('/') + 1)
-    fetch('http://localhost:3000/api/supervisor/search/' + profile, {
+    fetch('http://localhost:3000/api/supervisor/' + profile, {
         method: "GET",
     })
         .then(res => res.json())

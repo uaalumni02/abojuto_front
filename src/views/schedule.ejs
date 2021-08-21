@@ -101,13 +101,14 @@
                 })
                 var timeHtml = '';
                 for (var i = 0; i < eligibleAppts.length; i++) {
+                    console.log(eligibleAppts[i].timeId)
                     timeHtml += `<button>`
-                    timeHtml += `<span class="item-time" data-time_id="${eligibleAppts[i].id}"> ${eligibleAppts[i].time} </span>`;
+                    timeHtml += `<span class="item-time" data-time_id="${eligibleAppts[i].timeId}"> ${eligibleAppts[i].time} </span>`;
                     timeHtml += `</button>`
                 }
                 const timeContainer = document.getElementById("time");
                 timeContainer.innerHTML = timeHtml;
-                
+
                 $('.item-time').click(function (e) {
                     const selectedTimeId = $(this).data('time_id');
                     submitForm(selectedTimeId);
@@ -117,16 +118,20 @@
     }
 
 
+
     function submitForm(time_id) {
         const url = window.location.pathname;
         const userId = url.substring(url.lastIndexOf('/') + 1)
         const customerId = localStorage.getItem('customer');
         const appointmentDate = document.getElementById("dp1").value;
+        const token = localStorage.getItem('token');
+        const bearer = 'Bearer ' + token
 
         fetch('http://localhost:3000/api/appointment/', {
             method: "post",
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': bearer
             },
             body: JSON.stringify({
                 userId,

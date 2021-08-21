@@ -52,6 +52,8 @@ app.get("/search?license=", (req, res) => {
     return res.render("schedule");
   });
   
-  
+  app.get("/customerAppointments/:id", (req, res) => {
+    return res.render("customerAppointments");
+  });
 
 app.listen(port, () => console.log("server is running"));
