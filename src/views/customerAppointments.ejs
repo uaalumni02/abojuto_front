@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="/css/schedule.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body>
@@ -63,8 +63,10 @@
                     appointmentHtml += ` <th scope="col">First Name</th>`
                     appointmentHtml += ` <th scope="col">Last Name</th>`
                     appointmentHtml += ` <th scope="col">Date</th>`
+                    appointmentHtml += ` <th scope="col">Status</th>`
                     appointmentHtml += ` <th scope="col">Time</th>`
                     appointmentHtml += ` <th scope="col">Supervisor</th>`
+                    appointmentHtml += ` <th scope="col">Actions</th>`
 
                     appointmentHtml += `</tr>`
                     appointmentHtml += `</thead >`
@@ -74,9 +76,12 @@
                     appointmentHtml += `<td>${response.data[i].first_name}</td>`
                     appointmentHtml += `<td>${response.data[i].last_name}</td>`
                     appointmentHtml += `<td>${date}</td>`
+                    appointmentHtml += `<td></td>`
                     appointmentHtml += `<td>${response.data[i].time}</td>`
                     appointmentHtml += `<td>${response.data[i].name}</td>`
-
+                    appointmentHtml += `<td>`
+                    appointmentHtml +=  `<button class="fa fa-check" style="font-size:24px"></button>`
+                    appointmentHtml += `</td>`
 
                     appointmentHtml += `</tbody>`
                     appointmentHtml += `</table>`
