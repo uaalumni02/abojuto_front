@@ -9,7 +9,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <!-- <link rel="stylesheet" type="text/css" href="/css/profile.css"> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/schedule.css">
 </head>
 
 <body>
@@ -24,10 +25,67 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
                 </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">Schedule <span class="sr-only"></span></a>
+                </li>
             </ul>
         </div>
     </nav>
+    <br><br>
+    <div id="appointment"></div>
 </body>
+<script>
+    window.addEventListener("load", (req, res) => {
+        const url = window.location.pathname;
+        const customerId = url.substring(url.lastIndexOf('/') + 1)
+        const token = localStorage.getItem('token');
+        const bearer = 'Bearer ' + token
+        fetch('http://localhost:3000/api/appointment/' + customerId, {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': bearer
+            },
+        })
+            .then(res => res.json())
+            .then(response => {
+                var appointmentHtml = '';
+                for (var i = 0; i < response.data.length; i++) {
+                    console.log(response.data[i].appointmentDate)
 
+                    const date = moment
+                        .unix(response.data[i].appointmentDate)
+                        .format("MM-DD-YYYY");
+
+                    appointmentHtml += `<table class="table">`
+                    appointmentHtml += `<thead>`
+                    appointmentHtml += `<tr>`
+                    appointmentHtml += ` <th scope="col">First Name</th>`
+                    appointmentHtml += ` <th scope="col">Last Name</th>`
+                    appointmentHtml += ` <th scope="col">Date</th>`
+                    appointmentHtml += ` <th scope="col">Time</th>`
+                    appointmentHtml += ` <th scope="col">Supervisor</th>`
+
+                    appointmentHtml += `</tr>`
+                    appointmentHtml += `</thead >`
+                    appointmentHtml += `<tbody>`
+                    appointmentHtml += `<tr>`
+
+                    appointmentHtml += `<td>${response.data[i].first_name}</td>`
+                    appointmentHtml += `<td>${response.data[i].last_name}</td>`
+                    appointmentHtml += `<td>${date}</td>`
+                    appointmentHtml += `<td>${response.data[i].time}</td>`
+                    appointmentHtml += `<td>${response.data[i].name}</td>`
+
+
+                    appointmentHtml += `</tbody>`
+                    appointmentHtml += `</table>`
+                }
+                const appointmentContainer = document.getElementById("appointment");
+                appointmentContainer.innerHTML = appointmentHtml;
+            })
+            .catch(error => console.error('Error:', error));
+    })
+</script>
 
 </html>
