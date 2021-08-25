@@ -35,6 +35,9 @@
     <div id="appointment"></div>
 </body>
 <script>
+
+    let appointmentId = ""
+
     window.addEventListener("load", (req, res) => {
         const url = window.location.pathname;
         const customerId = url.substring(url.lastIndexOf('/') + 1)
@@ -49,13 +52,24 @@
         })
             .then(res => res.json())
             .then(response => {
+
                 var appointmentHtml = '';
                 for (var i = 0; i < response.data.length; i++) {
-                    console.log(response.data[i].appointmentDate)
-
                     const date = moment
                         .unix(response.data[i].appointmentDate)
                         .format("MM-DD-YYYY");
+
+                    const now = moment();
+                    const appointmentDate = moment(date).isBefore(now);
+
+                    if (appointmentDate) {
+                        response.data[i].status = 'Past Appointment'
+                    } else {
+                        response.data[i].status = 'Pending Appointment'
+                    }
+
+                    appointmentId = response.data[i].id
+                    console.log(appointmentId)
 
                     appointmentHtml += `<table class="table">`
                     appointmentHtml += `<thead>`
@@ -76,11 +90,11 @@
                     appointmentHtml += `<td>${response.data[i].first_name}</td>`
                     appointmentHtml += `<td>${response.data[i].last_name}</td>`
                     appointmentHtml += `<td>${date}</td>`
-                    appointmentHtml += `<td></td>`
+                    appointmentHtml += `<td>${response.data[i].status}</td>`
                     appointmentHtml += `<td>${response.data[i].time}</td>`
                     appointmentHtml += `<td>${response.data[i].name}</td>`
                     appointmentHtml += `<td>`
-                    appointmentHtml +=  `<button class="fa fa-check" style="font-size:24px"></button>`
+                    appointmentHtml += `<button onClick="updateAppointment()"  class="fa fa-check" style="font-size:24px"></button>`
                     appointmentHtml += `</td>`
 
                     appointmentHtml += `</tbody>`
@@ -91,6 +105,30 @@
             })
             .catch(error => console.error('Error:', error));
     })
+
+    const updateAppointment = () => {
+        let firstName = document.getElementById("firstName").value;
+        const token = localStorage.getItem("token");
+        const bearer = "Bearer " + token;
+        console.log(firstName)
+
+        fetch("http://localhost:3000/api/appointment/" + appointmentId, {
+            method: "PATCH",
+            headers: {
+                Authorization: bearer,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                status: "Complete",
+            })
+                .then(res => res.json())
+                .then(response => {
+                    console.log(response)
+                })
+                .catch(error => console.error("Error:", error))
+        });
+    };
+
 </script>
 
 </html>
