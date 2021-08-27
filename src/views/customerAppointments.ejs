@@ -41,6 +41,8 @@
     let appointmentId
     let userId
     let time_id
+    let dateOfAppointment
+
 
     window.addEventListener("load", (req, res) => {
         const url = window.location.pathname;
@@ -56,7 +58,6 @@
         })
             .then(res => res.json())
             .then(response => {
-                console.log(response.data)
 
                 var appointmentHtml = '';
                 for (var i = 0; i < response.data.length; i++) {
@@ -75,11 +76,10 @@
                         response.data[i].status = 'Pending Appointment'
                     }
 
-
                     appointmentId = response.data[i].id
                     userId = response.data[i].userId
                     time_id = response.data[i].time_id
-
+                    dateOfAppointment = response.data[i].appointmentDate
 
                     appointmentHtml += `<table class="table">`
                     appointmentHtml += `<thead>`
@@ -120,8 +120,10 @@
         const theForm = document.getElementById("appointmentForm");
         theForm.addEventListener("submit", (event) => {
             event.preventDefault();
+            let date = moment
+                .unix(dateOfAppointment)
+                .format("YYYY-MM-DD");
             let status = "Complete"
-            const appointmentDate = document.getElementById("date").innerText
             const url = window.location.pathname;
             const customerId = url.substring(url.lastIndexOf('/') + 1)
             const token = localStorage.getItem('token');
@@ -134,12 +136,11 @@
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    customerId: '55b7d6c9-ee20-49db-b08d-004cc1ce8fa5',
-                    userId: '79c306bd-5026-477b-af3d-758c9c04fc5d',
+                    customerId: customerId,
+                    userId: userId,
                     status,
-                    appointmentDate: '2021-08-15',
-                    time_id: '3'
-
+                    appointmentDate: date,
+                    time_id: time_id
 
                 })
             })
