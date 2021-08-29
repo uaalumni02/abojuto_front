@@ -42,6 +42,7 @@
     let userId
     let time_id
     let dateOfAppointment
+    let checkAppointmentStatus
 
 
     window.addEventListener("load", (req, res) => {
@@ -58,7 +59,6 @@
         })
             .then(res => res.json())
             .then(response => {
-                console.log(response.data)
 
                 var appointmentHtml = '';
                 for (var i = 0; i < response.data.length; i++) {
@@ -82,6 +82,7 @@
                     userId = response.data[i].userId
                     time_id = response.data[i].time_id
                     dateOfAppointment = response.data[i].appointmentDate
+                    checkAppointmentStatus = response.data[i].status
 
                     appointmentHtml += `<table class="table">`
                     appointmentHtml += `<thead>`
@@ -120,14 +121,13 @@
             .catch(error => console.error('Error:', error));
     })
 
-  const disbableBtn = () => {
+    const disbableBtn = () => {
         let date = moment
             .unix(dateOfAppointment)
             .format("YYYY-MM-DD");
         const now = moment();
         const appointment = moment(date).isBefore(now);
-        if (!appointment) {
-            console.log('stop btn')
+        if (!appointment || checkAppointmentStatus === "Complete") {
             document.getElementById("completeBtn").disabled = true
         }
     };
