@@ -38,6 +38,25 @@
 </body>
 <script>
 
+    const getToken = () => {
+        const token = localStorage.getItem('token');
+        const bearer = 'Bearer ' + token
+        return bearer
+    }
+
+
+    const getCustomerId = () => {
+        const url = window.location.pathname;
+        const customerId = url.substring(url.lastIndexOf('/') + 1)
+        return customerId
+    }
+
+    const isDateBefore = () => {
+        const now = moment();
+        return now
+    }
+
+
     let appointmentId
     let userId
     let time_id
@@ -46,15 +65,11 @@
 
 
     window.addEventListener("DOMContentLoaded", (req, res) => {
-        const url = window.location.pathname;
-        const customerId = url.substring(url.lastIndexOf('/') + 1)
-        const token = localStorage.getItem('token');
-        const bearer = 'Bearer ' + token
-        fetch('http://localhost:3000/api/appointment/' + customerId, {
+        fetch('http://localhost:3000/api/appointment/' + getCustomerId(), {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': bearer
+                'Authorization': getToken()
             },
         })
             .then(res => res.json())
@@ -66,9 +81,7 @@
                         .unix(response.data[i].appointmentDate)
                         .format("MM-DD-YYYY");
 
-                    const now = moment();
-                    const appointment = moment(date + 'T' + response.data[i].time).isBefore(now);
-
+                    const appointment = moment(date + 'T' + response.data[i].time).isBefore(isDateBefore());
 
                     if (response.data[i].status == 'Complete') {
                         response.data[i].status = 'Complete'
@@ -125,8 +138,7 @@
         let date = moment
             .unix(dateOfAppointment)
             .format("YYYY-MM-DD");
-        const now = moment();
-        const appointment = moment(date).isBefore(now);
+        const appointment = moment(date).isBefore(isDateBefore());
         if (!appointment || checkAppointmentStatus === "Complete") {
             document.getElementById("completeBtn").disabled = true
         }
@@ -142,19 +154,14 @@
                 .unix(dateOfAppointment)
                 .format("YYYY-MM-DD");
             let status = "Complete"
-            const url = window.location.pathname;
-            const customerId = url.substring(url.lastIndexOf('/') + 1)
-            const token = localStorage.getItem('token');
-            const bearer = 'Bearer ' + token
-
             fetch('http://localhost:3000/api/appointment/' + appointmentId, {
                 method: "PATCH",
                 headers: {
-                    'Authorization': bearer,
+                    'Authorization': getToken(),
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    customerId: customerId,
+                    customerId: getCustomerId,
                     userId: userId,
                     status,
                     appointmentDate: date,
